@@ -218,11 +218,40 @@ function show5DayForecast(data, cityName) {
         const dateStr = data.daily.time[i];
         const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
         const code = data.daily.weather_code[i];
-        const weatherDetails = getWeatherDetails(code);
+        
+        const weatherDetails = getWeatherDetails(code); 
         const dateObj = new Date(dateStr);
-        const dayName = dateObj.toLocaleDateString("tr-TR", { weekday: "long" });
+        
+        const dayName = dateObj.toLocaleDateString("tr-TR", { weekday: "short" });
 
-        const miniCardHTML = `<div class="col-6 col-md-2.4" style="width: 20%;"><div class="forecast-mini-card"><h6 class="fw-bold mb-2">${dayName}</h6><div class="my-3"><i class="fa-solid ${weatherDetails.icon} fa-2x ${weatherDetails.colorClass}"></i></div><h4 class="fw-bold mb-1">${maxTemp}°C</h4><small class="text-light-50 d-block text-capitalize" style="font-size: 11px;">${weatherDetails.desc}</small></div></div>`;
+        // Dereceye ve hava durumuna göre akıllı Emoji Seçici Çark 🧭
+        let weatherEmoji = "☀️"; // Varsayılan güneşli
+        const descText = (weatherDetails.desc || "").toLowerCase();
+
+        if (descText.includes("yağmur") || descText.includes("sağanak")) {
+            weatherEmoji = "🌧️";
+        } else if (descText.includes("kar") || descText.includes("fırtına")) {
+            weatherEmoji = "❄️";
+        } else if (descText.includes("bulutlu") || descText.includes("kapalı")) {
+            weatherEmoji = "☁️";
+        } else if (maxTemp >= 28) {
+            weatherEmoji = "🔥"; // 28 derece üstü sıcaklık alarmı
+        } else if (maxTemp <= 15) {
+            weatherEmoji = "🍃"; // Serin hava
+        } else if (descText.includes("açık") || descText.includes("güneşli")) {
+            weatherEmoji = "☀️";
+        }
+
+        // HTML yapısını o inatçı FontAwesome yerine doğrudan renkli emojilerle donattık! 🚢
+        const miniCardHTML = `
+            <div class="col-6 col-md-2">
+                <div class="forecast-mini-card">
+                    <h6 class="fw-bold mb-2">${dayName}</h6>
+                    <div class="fs-1 my-2" style="line-height: 1;">${weatherEmoji}</div>
+                    <h5 class="fw-bold mb-1">${maxTemp}°C</h5>
+                    <small class="text-capitalize" style="font-size: 11px;">${weatherDetails.desc}</small>
+                </div>
+            </div>`;
         container.innerHTML += miniCardHTML;
     }
     forecastRow.scrollIntoView({ behavior: 'smooth' });

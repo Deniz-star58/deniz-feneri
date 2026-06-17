@@ -91,3 +91,16 @@ body.snowy {
 .forecast-mini-card:hover {
     background: rgba(255, 255, 255, 0.15);
 }
+/* Mobil Ekran Düzenlemesi */
+@media (max-width: 768px) {
+    #forecastContainer {
+        display: flex;
+        flex-direction: column; /* Kartları yan yana yerine alt alta sıralar */
+        gap: 15px;
+    }
+    
+    #forecastContainer .col {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
