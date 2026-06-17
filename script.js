@@ -279,22 +279,26 @@ document.getElementById("notifySwitch").addEventListener("change", (e) => {
         Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
                 setSwitchState(true); localStorage.setItem("weatherNotifications", "allowed");
-                sendLocalNotification("Hava Durumu Asistanı", "Bildirimler başarıyla açıldı! 🌤️");
+                // Test bildirimini Deniz Feneri konseptine geçirdik 🚢
+                sendLocalNotification("Deniz Feneri Raporu", "Fener sinyalleri başarıyla aktif edildi! 🧭⚓");
             } else { alert("İzin reddedildi."); setSwitchState(false); }
         });
     } else { setSwitchState(false); localStorage.setItem("weatherNotifications", "blocked"); }
 });
+
 function setSwitchState(active) {
     const notifySwitch = document.getElementById("notifySwitch");
     const switchLabel = document.getElementById("switchLabel");
     const statusText = document.getElementById("notifyStatus");
     isNotificationsEnabled = active; notifySwitch.checked = active;
     if (active) {
-        switchLabel.innerText = "Bildirimler: Açık"; switchLabel.className = "form-check-label text-success fw-bold";
-        statusText.innerText = "Her sabah hava durumu bildirimleri cihazınıza fırlatılacak."; statusText.className = "small text-success mt-2 text-center";
+        // "Açık" yerine denizci markamıza özel yazılar bastık!
+        switchLabel.innerText = "Fener Bildirimleri: Sinyal Açık"; switchLabel.className = "form-check-label text-success fw-bold";
+        statusText.innerText = "Fener uyanık! Her sabah deniz seyir raporu cihazınıza fırlatılacak."; statusText.className = "small text-success mt-2 text-center";
     } else {
-        switchLabel.innerText = "Bildirimler: Kapalı"; switchLabel.className = "form-check-label text-danger fw-bold";
-        statusText.innerText = "Bildirimler kapatıldı."; statusText.className = "small text-light-50 mt-2 text-center";
+        // "Kapalı" yerine denizci markamıza özel yazılar bastık!
+        switchLabel.innerText = "Fener Bildirimleri: Sinyali Kes"; switchLabel.className = "form-check-label text-danger fw-bold";
+        statusText.innerText = "Fener söndürüldü, sabah raporları durduruldu."; statusText.className = "small text-light-50 mt-2 text-center";
     }
 }
 function sendLocalNotification(title, body) {
